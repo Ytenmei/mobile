@@ -11,6 +11,7 @@
           clearable
           left-icon="phone-o"
           placeholder="请输入手机号"
+          :error-message="mobileMessage"
         />
         <van-field
           v-model="user.code"
@@ -37,11 +38,18 @@ export default {
       user: {
         mobile: '',
         code: ''
-      }
+      },
+      mobileMessage: ''
     }
   },
   methods: {
     async handleLogin () {
+      if (this.user.mobile.trim().length) {
+        this.mobileMessage = ''
+      } else {
+        this.mobileMessage = '请输入手机号'
+        return
+      }
       try {
         const data = await login(this.user)
         // console.log(data)
