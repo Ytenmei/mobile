@@ -6,9 +6,14 @@ import Vant from 'vant'
 import 'vant/lib/index.css'
 import 'amfe-flexible'
 import './styles/index.less'
-import VeeValidate from 'vee-validate'
+import zhCN from 'vee-validate/dist/locale/zh_CN'
+import VeeValidate, { Validator } from 'vee-validate'
 
-Vue.use(VeeValidate)
+Vue.use(VeeValidate, {
+  // 配置改变的时候去触发校验，默认是input
+  // events: 'change'
+})
+Validator.localize('zh_CN', zhCN)
 
 Vue.use(Vant)
 

@@ -8,14 +8,19 @@
       <van-cell-group>
         <van-field
           v-model="user.mobile"
+          v-validate="'required'"
+          name="mobile"
+          :error-message="errors.first('mobile')"
           clearable
           left-icon="phone-o"
           placeholder="请输入手机号"
-          :error-message="mobileMessage"
         />
         <van-field
           v-model="user.code"
-          type="password"
+          v-validate="'required'"
+          name="code"
+          :error-message="errors.first('code')"
+          type="code"
           left-icon="scan"
           placeholder="请输入密码"
         />
@@ -42,22 +47,45 @@ export default {
       mobileMessage: ''
     }
   },
+  created () {
+    this.comfigCustomMessages()
+  },
   methods: {
     async handleLogin () {
-      if (this.user.mobile.trim().length) {
-        this.mobileMessage = ''
-      } else {
-        this.mobileMessage = '请输入手机号'
-        return
-      }
+      // if (this.user.mobile.trim().length) {
+      //   this.mobileMessage = ''
+      // } else {
+      //   this.mobileMessage = '请输入手机号'
+      //   return
+      // }
       try {
-        const data = await login(this.user)
-        // console.log(data)
-        this.$store.commit('setUser', data)
+        this.$validator.validate().then(async valid => {
+          // 如果表单验证失败，则什么都不做
+          if (!valid) {
+          // do stuff if not valid.
+            return
+          }
+          const data = await login(this.user)
+          // console.log(data)
+          this.$store.commit('setUser', data)
+        })
       } catch (err) {
         console.log(err)
         console.log('登录失败')
       }
+    },
+    comfigCustomMessages () {
+      const dict = {
+        custom: {
+          mobile: {
+            required: '手机号不能为空'
+          },
+          code: {
+            required: () => '验证码不能为空'
+          }
+        }
+      }
+      this.$validator.localize('zh_CN', dict)
     }
   }
 }
