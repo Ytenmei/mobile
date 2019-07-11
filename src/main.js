@@ -6,6 +6,10 @@ import Vant from 'vant'
 import 'vant/lib/index.css'
 import 'amfe-flexible'
 import './styles/index.less'
+import VeeValidate from 'vee-validate'
+
+Vue.use(VeeValidate)
+
 Vue.use(Vant)
 
 Vue.config.productionTip = false
