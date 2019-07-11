@@ -11,7 +11,7 @@ import VeeValidate, { Validator } from 'vee-validate'
 
 Vue.use(VeeValidate, {
   // 配置改变的时候去触发校验，默认是input
-  // events: 'change'
+  events: ''
 })
 Validator.localize('zh_CN', zhCN)
 
