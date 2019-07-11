@@ -44,7 +44,8 @@ export default {
     async handleLogin () {
       try {
         const data = await login(this.user)
-        console.log(data)
+        // console.log(data)
+        this.$store.commit('setUser', data)
       } catch (err) {
         console.log(err)
         console.log('登录失败')
