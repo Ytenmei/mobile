@@ -14,8 +14,9 @@ export default new Vuex.Store({
     登录成功，调用mutation 更新容器中的user 的状态
      */
     setUser (state, data) {
+      // 先更新数据到state上
       state.user = data
-      // 将数据放到本地存储
+      // 再将数据放到本地存储
       auth.saveUser(state.user)
     }
   },

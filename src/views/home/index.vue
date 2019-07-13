@@ -5,11 +5,16 @@
       <!--activeChannelIndex 绑定当前激活的标签页，使用索引
        -->
       <van-tabs class="channel-tabs" v-model="activeChannelIndex">
-        <van-tab title="标签 1">
-          <!-- 下拉刷新
-            isLoading 用来控制下拉刷新的loading状态
-            下拉刷新的时候，它会自动将loading设置为true
-            @refresh 当下拉刷新的时候会触发
+        <!-- 获取频道 -->
+        <van-tab
+        :title="channelItem.name"
+        v-for="channelItem in channels"
+        :key="channelItem.id"
+        >
+          <!--下拉刷新
+          isLoading 用来控制下拉刷新的loading状态
+          下拉刷新的时候，它会自动将loading设置为true
+          @refresh 当下拉刷新的时候会触发
            -->
           <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
             <!--
@@ -28,22 +33,21 @@
             @load="onLoad"
           >
             <van-cell
-              v-for="item in list"
-              :key="item"
-              :title="item"
+            v-for="item in list"
+            :key="item"
+            :title="item"
             />
             </van-list>
           </van-pull-refresh>
         </van-tab>
-        <van-tab title="标签 2">内容 2</van-tab>
-        <van-tab title="标签 3">内容 3</van-tab>
-        <van-tab title="标签 4">内容 4</van-tab>
       </van-tabs>
     </div>
   </div>
 </template>
 
 <script>
+import { getUserChannels } from '@/api/channel'
+
 export default {
   name: 'HomeIndex',
   data () {
@@ -52,10 +56,39 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      isLoading: false
+      isLoading: false,
+      channels: [] // 存储频道列表
     }
   },
+  created () {
+    this.loadChannels()
+  },
   methods: {
+    async loadChannels () {
+      // 获取本地存储数据
+      const { user } = this.$store.state
+      // 存储频道列表
+      let channels = []
+      // 已登录
+      if (user) {
+        const data = await getUserChannels()
+        // console.log(data)
+        channels = data.channels
+      } else {
+        // 未登录
+        // 如果有本地存储数据则使用本地存储中的频道列表
+        const localChannels = JSON.parse(window.localStorage.getItem('channels'))
+        if (localChannels) {
+          channels = localChannels
+        } else {
+          // 如果没有本地存储频道数据则请求获取默认推荐频道列表
+          const data = await getUserChannels()
+          // console.log(data)
+          channels = data.channels
+        }
+      }
+      this.channels = channels
+    },
     onLoad () {
       // 异步更新数据
       setTimeout(() => {
