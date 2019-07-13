@@ -109,8 +109,18 @@ export default {
     },
     // 上拉加载更多 pushh 数据
     async onLoad () {
+      await this.$sleep(800)
       let data = []
       data = await this.loadArticles()
+      /**
+       * 如果没有pre_timestamp并且数组是空的，则没有数据了
+       */
+      if (!data.pre_timestamp && !data.results.length) {
+        this.activeChannel.upPullFinished = true // 设置该频道数据加载完毕。并且不再onLoad
+        this.activeChannel.upPullLoading = false // loading效果取消
+        // 代码不再往后执行
+        return
+      }
       // pre_timestamp 下一页的数据（上一次时间点的数据）
       // results 当前更新的文章数据
       // console.log(data)
