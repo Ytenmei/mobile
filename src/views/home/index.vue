@@ -5,6 +5,9 @@
       <!--activeChannelIndex 绑定当前激活的标签页，使用索引
        -->
       <van-tabs class="channel-tabs" v-model="activeChannelIndex">
+        <div slot="nav-right" class="wap-nav">
+          <van-icon name="wap-nav"></van-icon>
+        </div>
         <!-- 获取频道 -->
         <van-tab
         :title="channelItem.name"
@@ -81,8 +84,9 @@ export default {
     async '$store.state.user' () {
       this.loadChannels()
       // 频道数据改变，重新加载当前激活频道的数据
+      // 只要将上拉加载更多设置为true，它就会自动去调用onLoad
       this.activeChannel.upPullLoading = true
-      await this.onLoad()
+      // await this.onLoad()
     }
   },
   created () {
@@ -213,5 +217,10 @@ export default {
 }
 .channel-tabs /deep/ .van-tabs__content {
   margin-top: 100px;
+}
+.channel-tabs /deep/ .wap-nav {
+  position: fixed;
+  right: 0;
+  background-color: #ffff77;
 }
 </style>
