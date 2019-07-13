@@ -12,7 +12,7 @@ export const getArticles = ({
 }) => {
   return request({
     method: 'GET',
-    url: '/app/v1_0/articles',
+    url: '/app/v1_1/articles',
     params: {
       channel_id: channelId,
       timestamp,
