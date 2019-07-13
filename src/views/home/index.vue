@@ -74,6 +74,17 @@ export default {
       // console.log(this.channels[this.activeChannelIndex])
     }
   },
+  watch: {
+    // 监视容器中的user 用户
+    // 凡是能this.出来的成员都可以直接在这里监视
+    // 由于路由缓存了，所以这里监视用户的登录状态，如果登录了，则加载用户登录的列表
+    async '$store.state.user' () {
+      this.loadChannels()
+      // 频道数据改变，重新加载当前激活频道的数据
+      this.activeChannel.upPullLoading = true
+      await this.onLoad()
+    }
+  },
   created () {
     this.loadChannels()
   },
