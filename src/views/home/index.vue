@@ -96,6 +96,7 @@ export default {
       })
       this.channels = channels
     },
+    // 上拉加载更多 pushh 数据
     onLoad () {
       // 异步更新数据
       setTimeout(() => {
@@ -111,6 +112,7 @@ export default {
         }
       }, 500)
     },
+    // 下拉刷新 重置列表数据
     onRefresh () {
       console.log('onRefresh')
       setTimeout(() => {
