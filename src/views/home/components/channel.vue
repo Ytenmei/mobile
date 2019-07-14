@@ -19,18 +19,20 @@
             type="danger"
             plain
             size="mini"
-          >编辑</van-button>
+            @click="isEdit = !isEdit"
+          >{{ isEdit ? '完成': '编辑' }}</van-button>
         </div>
       </div>
       <van-grid class="channel-content" :gutter="10" clickable>
         <van-grid-item
-          v-for="item in userChannels"
+          v-for="(item, index) in userChannels"
           :key="item.id"
           text="文字">
           <span
           class="text"
-          >{{item.name}}</span>
-          <van-icon class="close-icon" name="close" />
+          :class="{ active: index === activeIndex && !isEdit}"
+          >{{item.name}}</span> // 在频道中显示高亮 编辑状态则不显示↑
+          <van-icon class="close-icon" v-show="isEdit" name="close" />
         </van-grid-item>
       </van-grid>
     </div>
@@ -78,7 +80,8 @@ export default {
   },
   data () {
     return {
-      allChannels: [] // 所有的频道列表
+      allChannels: [], // 所有的频道列表
+      isEdit: false
     }
   },
   computed: {
@@ -116,7 +119,7 @@ export default {
       // 持久化：
       if (this.user) {
         // 登录：将数据添加到后端
-
+        // return
       } else {
         // 未登录：将数据储存到本地
         window.localStorage.setItem('channels', JSON.stringify(this.userChannels))

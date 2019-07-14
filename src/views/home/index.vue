@@ -72,7 +72,7 @@ export default {
   },
   data () {
     return {
-      activeChannelIndex: 0,
+      activeChannelIndex: 0, // 当前激活的标签页
       channels: [], // 存储频道列表
       isChannelShow: false
     }
