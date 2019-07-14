@@ -52,10 +52,24 @@
       v-model 实际上是：
       v-bind：value="数据"
       v-on:input="数据 = $event"
+      :action-index.sync="activeChannelIndex" 等价于两句代码的简写
+      :action-index="activeChannelIndex"
+      @update:active-index="activeChannelIndex = $event"
+      当你给一个属性加上 .sync 修饰符的时候，它hi自动监听
+      @update：绑定的字段="绑定的字段 = $event"
+      其中的事件名称中的 update： 是固定的语法
+      所以你在你的子组件中发布自定义事件的时候务必要发送一个名字叫update：绑定的字段 的事件
+      props数据.sync 和 v-model 的作用是一样的，但是一个组件只有一个v-model
+      v-model="isChannelShow" 是
+      v-bind:value="isChannelShow"
+      @input="isChannelShow = $event"
+      的简写
      -->
-    <HomeChannel v-model="isChannelShow"
+    <HomeChannel
+    v-model="isChannelShow"
     :user-channels="channels"
-    :action-index="activeChannelIndex" />
+    :active-index.sync="activeChannelIndex"
+    />
     <!-- 频道管理组件 -->
   </div>
 </template>

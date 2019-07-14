@@ -27,11 +27,11 @@
         <van-grid-item
           v-for="(item, index) in userChannels"
           :key="item.id"
-          text="文字">
+          @click="handleUserChannelClick(item, index)">
           <span
           class="text"
           :class="{ active: index === activeIndex && !isEdit}"
-          >{{item.name}}</span> // 在频道中显示高亮 编辑状态则不显示↑
+          >{{item.name}}</span><!-- 在频道中显示高亮 编辑状态则不显示↑ -->
           <van-icon class="close-icon" v-show="isEdit" name="close" />
         </van-grid-item>
       </van-grid>
@@ -123,6 +123,26 @@ export default {
       } else {
         // 未登录：将数据储存到本地
         window.localStorage.setItem('channels', JSON.stringify(this.userChannels))
+      }
+    },
+    // 切换频道
+    changeChannel (item, index) {
+      // console.log('change')
+      // 切换频道
+      this.$emit('update:active-index', index)
+      // 切换频道后关闭窗口
+      this.$emit('input', false)
+    },
+    deleteChannel (item, index) {
+      // console.log('deleted')
+    },
+    handleUserChannelClick (item, index) {
+      // 非编辑状态:切换频道
+      if (!this.isEdit) {
+        this.changeChannel(item, index)
+      } else {
+        // 编辑状态：删除频道
+        this.deleteChannel(item, index)
       }
     }
   }
