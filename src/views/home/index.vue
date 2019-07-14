@@ -54,7 +54,7 @@
       v-on:input="数据 = $event"
      -->
     <HomeChannel v-model="isChannelShow"
-    :channels="channels"
+    :user-channels="channels"
     :action-index="activeChannelIndex" />
     <!-- 频道管理组件 -->
   </div>
@@ -202,6 +202,7 @@ export default {
       // 取消loading状态
       activeChannel.downPullLoading = false
     },
+    // 当前频道数据
     async loadArticles () {
       const { id: channelId, timestamp } = this.activeChannel
       const data = await getArticles({
