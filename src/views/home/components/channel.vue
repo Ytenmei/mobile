@@ -133,8 +133,22 @@ export default {
       // 切换频道后关闭窗口
       this.$emit('input', false)
     },
+    // 删除频道
     deleteChannel (item, index) {
       // console.log('deleted')
+      // 删除用户数据
+      this.userChannels.splice(index, 1)
+      // 手动设置一下当前激活的标签搜因，用来触发onLoad调用，否则看不到数据
+      // this.$emit('update:active-index', 1)
+      // 判断当前激活频道中是否有数据
+      if (this.user) {
+        // 登录：发请求删除
+
+        return
+      }
+      // 未登录，删除本地存储的数据
+      // 重新更新本地数据
+      window.localStorage.setItem('channels', JSON.stringify(this.userChannels))
     },
     handleUserChannelClick (item, index) {
       // 非编辑状态:切换频道

@@ -110,6 +110,13 @@ export default {
       // 只要将上拉加载更多设置为true，它就会自动去调用onLoad
       this.activeChannel.upPullLoading = true
       // await this.onLoad()
+    },
+    isChannelShow () {
+      // 那就手动加载跳到推荐
+      if (!this.isChannelShow && !this.activeChannel.articles.length) {
+        this.activeChannel.upPullLoading = true
+        this.onLoad()
+      }
     }
   },
   created () {
