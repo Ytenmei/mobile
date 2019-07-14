@@ -55,7 +55,9 @@
     </div>
   </van-popup>
 </template>
+
 <script>
+import { getAllChannels } from '@/api/channel'
 export default {
   name: 'HomeChannel',
   props: {
@@ -74,7 +76,17 @@ export default {
   },
   data () {
     return {
-      show: false
+      allChannels: [] // 所有的频道列表
+    }
+  },
+  created () {
+    this.loadAllChannels()
+  },
+  methods: {
+    async loadAllChannels () {
+      const data = await getAllChannels()
+      // console.log(data)
+      this.allChannels = data.channels
     }
   }
 }
