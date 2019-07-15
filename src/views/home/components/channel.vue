@@ -111,6 +111,13 @@ export default {
     async loadAllChannels () {
       const data = await getAllChannels()
       // console.log(data)
+      data.channels.forEach(item => {
+        item.articles = [] // 存储当前文章的列表
+        item.timestamp = Date.now() // 存储下一页的时间戳
+        item.downPullLoading = false // 当前频道的下拉刷新
+        item.upPullLoading = false // 当前频道的上拉刷新
+        item.upPullFinished = false // 控制当前数据是否加载完毕
+      })
       this.allChannels = data.channels
     },
     handleAddChannel (item) {
