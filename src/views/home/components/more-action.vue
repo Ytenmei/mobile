@@ -14,19 +14,19 @@
     <van-cell-group v-else>
       <van-cell icon="arrow-left" @click="isReportShow = false" />
       <van-cell icon="location-o" title="拉黑作者" />
-      <van-cell icon="location-o" title="拉黑作者" />
-      <van-cell icon="location-o" title="拉黑作者" />
-      <van-cell icon="location-o" title="拉黑作者" />
-      <van-cell icon="location-o" title="拉黑作者" />
-      <van-cell icon="location-o" title="拉黑作者" />
-      <van-cell icon="location-o" title="拉黑作者" />
-      <van-cell icon="location-o" title="拉黑作者" />
+       <van-cell
+       icon="location-o"
+       :title="item.labey"
+       v-for="item in reportTypes"
+       :key="item.value"
+       @click="handleReportArticle(item.value)"
+       />
     </van-cell-group>
   </van-dialog>
 </template>
 
 <script>
-import { dislickArticle } from '@/api/article'
+import { dislickArticle, reportArticle } from '@/api/article'
 import { addBlacklist } from '@/api/user'
 export default {
   name: 'MoreAction',
@@ -41,7 +41,18 @@ export default {
   },
   data () {
     return {
-      isReportShow: false
+      isReportShow: false,
+      reportTypes: [
+        { labey: '其他问题', value: 0 },
+        { labey: '标题夸张', value: 1 },
+        { labey: '低俗色情', value: 2 },
+        { labey: '错别字多', value: 3 },
+        { labey: '旧闻重复', value: 4 },
+        { labey: '广告软文', value: 5 },
+        { labey: '内容不实', value: 6 },
+        { labey: '涉嫌违法犯罪', value: 7 },
+        { labey: '侵权', value: 8 }
+      ]
     }
   },
   methods: {
@@ -64,6 +75,27 @@ export default {
         this.$emit('add-blacklist-success')
       } catch (err) {
         this.$toast('操作失败')
+      }
+    },
+    async handleReportArticle (type) {
+      try {
+        await reportArticle({
+          articleId: this.currentArticle.art_id,
+          type
+        })
+        // this.$toast('举报成功')
+        //  事件不是轻质的，我只是提供了，用不用是你的事
+        this.$emit('report-success')
+        // 关闭对话框
+        this.$emit('input', false)
+        // 提示
+        this.$toast('举报成功')
+      } catch (err) {
+        if (err.response.status === 409) {
+          this.$toast('该文章已被举报过')
+        } else {
+          this.$toast('操作失败')
+        }
       }
     }
   }
