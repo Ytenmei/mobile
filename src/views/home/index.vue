@@ -36,13 +36,33 @@
           v-model="channelItem.upPullLoading"
           :finished="channelItem.upPullFinished"
           finished-text="没有更多了"
-          @load="onLoad"
-        >
-          <van-cell
-          v-for="articleItem in channelItem.articles"
-          :key="articleItem.art_id"
-          :title="articleItem.title"
-          />
+          @load="onLoad">
+            <van-cell
+            v-for="articleItem in channelItem.articles"
+            :key="articleItem.art_id"
+            :title="articleItem.title">
+              <div slot="label">
+                <!-- 图片区域 -->
+                <template v-if="articleItem.cover.type">
+                  <van-grid :border="false" :column-num="3">
+                    <van-grid-item
+                      v-for="(img, index) in articleItem.cover.images"
+                      :key="index">
+                      <van-image :src="img" />
+                    </van-grid-item>
+                  </van-grid>
+                </template>
+
+                <!-- /图片区域 -->
+                <p>
+                  <span>{{ articleItem.aut_name }}</span>
+                  &nbsp;
+                  <span>{{ articleItem.comm_count}}评论</span>
+                  &nbsp;
+                  <span>{{ articleItem.pubdate }}</span>
+                </p>
+              </div>
+            </van-cell>
           </van-list>
         </van-pull-refresh>
       </van-tab>
