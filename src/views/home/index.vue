@@ -113,9 +113,12 @@ export default {
     },
     isChannelShow () {
       // 那就手动加载跳到推荐
-      if (!this.isChannelShow && !this.activeChannel.articles.length) {
-        this.activeChannel.upPullLoading = true
-        this.onLoad()
+      if (!this.isChannelShow) {
+        // this.activeChannel.upPullLoading = true
+        // this.onRefresh()
+        // this.onLoad()
+        // console.log(this.activeChannelIndex)
+        this.activeChannelIndex = 0
       }
     }
   },

@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { getAllChannels, deleteUserChannel } from '@/api/channel'
+import { getAllChannels, deleteUserChannel, resetUserChannels } from '@/api/channel'
 import { mapState } from 'vuex'
 export default {
   name: 'HomeChannel',
@@ -120,12 +120,21 @@ export default {
       })
       this.allChannels = data.channels
     },
-    handleAddChannel (item) {
+    async handleAddChannel (item) {
       // 将点击的频道添加到用户频道中
       this.userChannels.push(item)
       // 持久化：
       if (this.user) {
         // 登录：将数据添加到后端
+        // 截取推荐之后的频道循环返回id和索引
+        const data = this.userChannels.slice(1).map((item, index) => {
+          return {
+            id: item.id, // 频道ID
+            seq: index + 2
+          }
+        })
+        // console.log(data)
+        await resetUserChannels(data)
         // return
       } else {
         // 未登录：将数据储存到本地
