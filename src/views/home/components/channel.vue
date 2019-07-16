@@ -32,7 +32,7 @@
           class="text"
           :class="{ active: index === activeIndex && !isEdit}"
           >{{item.name}}</span><!-- 在频道中显示高亮 编辑状态则不显示↑ -->
-          <van-icon class="close-icon" v-show="isEdit" name="close" />
+          <van-icon class="close-icon" v-show="isEdit && item.name !== '推荐'" name="close" />
         </van-grid-item>
       </van-grid>
     </div>
@@ -172,7 +172,7 @@ export default {
         this.changeChannel(item, index)
       } else {
         // 编辑状态：删除频道
-        this.deleteChannel(item, index)
+        item.name !== '推荐' && this.deleteChannel(item, index)
       }
     }
   }
