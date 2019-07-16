@@ -60,7 +60,17 @@
                   <span>{{ articleItem.comm_count}}评论</span>
                   &nbsp;
                   <!-- 过滤器 -->
+                  <!--
+                    把后端返回的数据转换成另一种格式输出：
+                    1. 从数据的源头来转换，重用麻烦
+                    2. 使用一个方法,重用麻烦
+                    3.使用过滤器
+                      局部过滤器 filters 选项
+                      全局过滤器 Vue.fiLter(...),任何组件都可以使用
+                   -->
+                  <!-- <span>{{ relativeTime(articleItem.pubdate) }}</span> -->
                   <span>{{ articleItem.pubdate | relativeTime }}</span>
+                  <van-icon @click="isMoreActionShow = true" class="close" name="close" />
                 </p>
               </div>
             </van-cell>
@@ -92,6 +102,9 @@
     :active-index.sync="activeChannelIndex"
     />
     <!-- 频道管理组件 -->
+    <!-- 更多操作 -->
+    <more-action v-model="isMoreActionShow"/>
+    <!-- 更多操作 -->
   </div>
 </template>
 
@@ -99,17 +112,20 @@
 import { getUserChannels } from '@/api/channel'
 import { getArticles } from '@/api/article'
 import HomeChannel from './components/channel'
+import MoreAction from './components/more-action'
 
 export default {
   name: 'HomeIndex',
   components: {
-    HomeChannel
+    HomeChannel,
+    MoreAction
   },
   data () {
     return {
       activeChannelIndex: 0, // 当前激活的标签页
       channels: [], // 存储频道列表
-      isChannelShow: false
+      isChannelShow: false,
+      isMoreActionShow: true
     }
   },
   computed: {
@@ -277,5 +293,9 @@ export default {
   position: fixed;
   right: 0;
   background-color: #ffff77;
+}
+.channel-tabs .close {
+  float: right;
+  font-size: 30px;
 }
 </style>
