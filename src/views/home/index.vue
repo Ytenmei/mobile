@@ -59,7 +59,8 @@
                   &nbsp;
                   <span>{{ articleItem.comm_count}}评论</span>
                   &nbsp;
-                  <span>{{ articleItem.pubdate }}</span>
+                  <!-- 过滤器 -->
+                  <span>{{ articleItem.pubdate | relativeTime }}</span>
                 </p>
               </div>
             </van-cell>
