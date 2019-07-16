@@ -23,10 +23,10 @@ export const getArticles = ({
 /**
 * 对文章不喜欢
 */
-export const disLickArticle = articleId => {
+export const dislickArticle = articleId => {
   return request({
     method: 'POST',
-    url: ' /app/v1_0/article/dislikes',
+    url: '/app/v1_0/article/dislikes',
     data: {
       target: articleId
     }
